@@ -6,7 +6,5 @@ public interface IMap<TKey, TValue>
 
 	public bool Get(TKey key, ref TValue value);
 
-	public bool GetOrInsert(TKey key, ref TValue value);
-
 	public void Clear(IExecutor executor);
 }

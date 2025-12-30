@@ -1,5 +1,6 @@
 ﻿namespace Simulator.Engine.Collisions.BroadPhase;
 
+using System;
 using Simulator.Core;
 
 public partial struct DynamicGrid<TStorage> : ICollisionMap
@@ -22,14 +23,15 @@ public partial struct DynamicGrid<TStorage> : ICollisionMap
 		Storage.SetBound(index, bound);
 		int size = GetSize(bound);
 		Storage.SetSizeFlag(size, true);
-		Node node = new Node(-1);
-		Storage.SetNode(index, node);
 		DynamicGridKey key = new DynamicGridKey(bound.Lower, size);
 		DynamicGridValue value = new DynamicGridValue(index);
-		if (Storage.GetOrInsert(key, ref value))
-		{
-			Storage.InsertNodeAtomic(index, value.NodeIndex);
-		}
+		Storage.Insert(key, value);
+	}
+
+	public void UpdateNodes(IExecutor executor)
+	{
+		UpdateNodeCommand command = new UpdateNodeCommand(this);
+		executor.Execute(command, Storage.ObjectCount);
 	}
 
 	public void DetectCollisions<TCollisionCallback>(IExecutor executor, TCollisionCallback callback)
@@ -39,22 +41,27 @@ public partial struct DynamicGrid<TStorage> : ICollisionMap
 		executor.Execute(command, Storage.ObjectCount);
 	}
 
+	private void UpdateNode(int index)
+	{
+		Bound bound = Storage.GetBound(index);
+		int size = GetSize(bound);
+		DynamicGridKey key = new DynamicGridKey(bound.Lower, size);
+		DynamicGridValue value = new DynamicGridValue();
+		if (Storage.Get(key, ref value) == false || value.NodeIndex == index)
+		{
+			Node node = new Node(-1);
+			Storage.SetNode(index, node);
+		}
+		else
+		{
+			Storage.InsertNodeAtomic(index, value.NodeIndex);
+		}
+	}
+
 	private void DetectCollisions<TCollisionCallback>(int index, TCollisionCallback callback)
 		where TCollisionCallback : struct, ICollisionCallback
 	{
 		Bound bound = Storage.GetBound(index);
-		if (false)
-		{
-			for (int otherIndex = index + 1; otherIndex < Storage.ObjectCount; otherIndex++)
-			{
-				Bound otherBound = Storage.GetBound(otherIndex);
-				if (Bound.Intersect(bound, otherBound))
-				{
-					callback.ProcessCollision(index, otherIndex);
-				}
-			}
-			return;
-		}
 		int minSize = GetSize(bound);
 		for (int size = minSize; size < DynamicGridKey.MaxSize; size++)
 		{

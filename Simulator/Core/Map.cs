@@ -8,8 +8,7 @@ public partial struct Map<TKey, TValue, TStorage> : IMap<TKey, TValue>
 	where TStorage : struct, IMapStorage<TKey, TValue>
 {
 	private const int Empty = 0;
-	private const int Pending = 1;
-	private const int Occupied = 2;
+	private const int Occupied = 1;
 
 	public TStorage Storage;
 
@@ -45,37 +44,6 @@ public partial struct Map<TKey, TValue, TStorage> : IMap<TKey, TValue>
 			if (Storage.GetFlag(index) == Empty)
 			{
 				return false;
-			}
-			if (Storage.GetKey(index).Equals(key))
-			{
-				value = Storage.GetValue(index);
-				return true;
-			}
-			Step(ref hash);
-		}
-	}
-
-	public bool GetOrInsert(TKey key, ref TValue value)
-	{
-		int hash = Hash(key);
-		while (true)
-		{
-			int index = GetIndex(hash, Storage.Size);
-			int flag = Storage.GetFlag(index);
-			if (flag == Empty)
-			{
-				flag = Storage.CompareExchangeFlag(index, Empty, Pending);
-				if (flag == Empty)
-				{
-					Storage.SetKey(index, key);
-					Storage.SetValue(index, value);
-					Storage.SetFlag(index, Occupied);
-					return false;
-				}
-			}
-			while (flag == Pending)
-			{
-				flag = Storage.GetFlag(index);
 			}
 			if (Storage.GetKey(index).Equals(key))
 			{

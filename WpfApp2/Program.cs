@@ -121,8 +121,6 @@ public static class Program
 	[STAThread]
 	static void Main()
 	{
-		Random rng = new Random(1);
-
 		TestGPU();
 
 		if (false)

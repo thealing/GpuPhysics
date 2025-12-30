@@ -78,11 +78,6 @@ public struct DynamicGridStorage : IDynamicGridStorage
 		return Map.Get(key, ref value);
 	}
 
-	public bool GetOrInsert(DynamicGridKey key, ref DynamicGridValue value)
-	{
-		return Map.GetOrInsert(key, ref value);
-	}
-
 	public void Clear(IExecutor executor)
 	{
 		Array.Fill(SizeFlags, 0);

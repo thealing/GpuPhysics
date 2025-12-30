@@ -32,6 +32,7 @@ public partial struct World<TStorage, TCollisionMap>
 		CollisionMap.PrepareUpdate(executor);
 		times.PreparationTime = timer.Lap();
 		executor.Execute(updateShapeTransformCommand, Storage.ShapeCount);
+		CollisionMap.UpdateNodes(executor);
 		times.ShapeUpdateTime = timer.Lap();
 		executor.Execute(updateBodyTransformCommand, Storage.BodyCount);
 		times.BodyUpdateTime = timer.Lap();

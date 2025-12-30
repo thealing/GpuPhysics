@@ -8,6 +8,8 @@ public interface ICollisionMap
 
 	public void UpdateBound(int index, Bound bound);
 
+	public void UpdateNodes(IExecutor executor);
+
 	public void DetectCollisions<TCollisionCallback>(IExecutor executor, TCollisionCallback callback)
 		where TCollisionCallback : struct, ICollisionCallback;
 }

@@ -4,6 +4,21 @@ using Simulator.Core;
 
 public partial struct DynamicGrid<TStorage> where TStorage : IDynamicGridStorage
 {
+	internal readonly struct UpdateNodeCommand : ICommand
+	{
+		public UpdateNodeCommand(DynamicGrid<TStorage> instance)
+		{
+			_instance = instance;
+		}
+
+		public void Execute(int index)
+		{
+			_instance.UpdateNode(index);
+		}
+
+		private readonly DynamicGrid<TStorage> _instance;
+	}
+
 	internal readonly struct CollisionCommand<TCollisionCallback> : ICommand
 		where TCollisionCallback : struct, ICollisionCallback
 	{
