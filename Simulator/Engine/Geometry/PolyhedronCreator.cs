@@ -1,0 +1,243 @@
+﻿namespace Simulator.Engine.Geometry;
+
+public static class PolyhedronCreator
+{
+	public static PolyhedronDefinition CreateTetrahedronDefinition()
+	{
+		float a = 1f / RealMath.Sqrt(3f);
+		Vector[] points = new Vector[4];
+		points[0] = new Vector(a, a, a);
+		points[1] = new Vector(a, -a, -a);
+		points[2] = new Vector(-a, a, -a);
+		points[3] = new Vector(-a, -a, a);
+		PolyhedronDefinition.Side[] sides = new PolyhedronDefinition.Side[4];
+		sides[0] = new PolyhedronDefinition.Side(1, 2, 0);
+		sides[1] = new PolyhedronDefinition.Side(2, 3, 0);
+		sides[2] = new PolyhedronDefinition.Side(3, 1, 0);
+		sides[3] = new PolyhedronDefinition.Side(3, 2, 1);
+		PolyhedronEdge[] edges = new PolyhedronEdge[6];
+		edges[0] = new PolyhedronEdge(0, 1, 0, 2);
+		edges[1] = new PolyhedronEdge(0, 2, 1, 0);
+		edges[2] = new PolyhedronEdge(0, 3, 2, 1);
+		edges[3] = new PolyhedronEdge(1, 2, 0, 3);
+		edges[4] = new PolyhedronEdge(2, 3, 1, 3);
+		edges[5] = new PolyhedronEdge(3, 1, 2, 3);
+		return new PolyhedronDefinition(points, sides, edges);
+	}
+
+	public static PolyhedronDefinition CreateCubeDefinition()
+	{
+		float a = 1f / RealMath.Sqrt(3f);
+		Vector[] points = new Vector[8];
+		points[0] = new Vector(-a, -a, -a);
+		points[1] = new Vector(a, -a, -a);
+		points[2] = new Vector(a, a, -a);
+		points[3] = new Vector(-a, a, -a);
+		points[4] = new Vector(-a, -a, a);
+		points[5] = new Vector(a, -a, a);
+		points[6] = new Vector(a, a, a);
+		points[7] = new Vector(-a, a, a);
+		PolyhedronDefinition.Side[] sides = new PolyhedronDefinition.Side[6];
+		sides[0] = new PolyhedronDefinition.Side(3, 2, 1, 0);
+		sides[1] = new PolyhedronDefinition.Side(4, 5, 6, 7);
+		sides[2] = new PolyhedronDefinition.Side(0, 1, 5, 4);
+		sides[3] = new PolyhedronDefinition.Side(1, 2, 6, 5);
+		sides[4] = new PolyhedronDefinition.Side(2, 3, 7, 6);
+		sides[5] = new PolyhedronDefinition.Side(3, 0, 4, 7);
+		PolyhedronEdge[] edges = new PolyhedronEdge[12];
+		edges[0] = new PolyhedronEdge(0, 1, 2, 0);
+		edges[1] = new PolyhedronEdge(1, 2, 3, 0);
+		edges[2] = new PolyhedronEdge(2, 3, 4, 0);
+		edges[3] = new PolyhedronEdge(3, 0, 5, 0);
+		edges[4] = new PolyhedronEdge(4, 5, 1, 2);
+		edges[5] = new PolyhedronEdge(5, 6, 1, 3);
+		edges[6] = new PolyhedronEdge(6, 7, 1, 4);
+		edges[7] = new PolyhedronEdge(7, 4, 1, 5);
+		edges[8] = new PolyhedronEdge(0, 4, 5, 2);
+		edges[9] = new PolyhedronEdge(1, 5, 2, 3);
+		edges[10] = new PolyhedronEdge(2, 6, 3, 4);
+		edges[11] = new PolyhedronEdge(3, 7, 4, 5);
+		return new PolyhedronDefinition(points, sides, edges);
+	}
+
+	public static PolyhedronDefinition CreateOctahedronDefinition()
+	{
+		Vector[] points = new Vector[6];
+		points[0] = new Vector(1, 0, 0);
+		points[1] = new Vector(-1, 0, 0);
+		points[2] = new Vector(0, 1, 0);
+		points[3] = new Vector(0, -1, 0);
+		points[4] = new Vector(0, 0, 1);
+		points[5] = new Vector(0, 0, -1);
+		PolyhedronDefinition.Side[] sides = new PolyhedronDefinition.Side[8];
+		sides[0] = new PolyhedronDefinition.Side(0, 2, 4);
+		sides[1] = new PolyhedronDefinition.Side(2, 1, 4);
+		sides[2] = new PolyhedronDefinition.Side(1, 3, 4);
+		sides[3] = new PolyhedronDefinition.Side(3, 0, 4);
+		sides[4] = new PolyhedronDefinition.Side(5, 2, 0);
+		sides[5] = new PolyhedronDefinition.Side(5, 1, 2);
+		sides[6] = new PolyhedronDefinition.Side(5, 3, 1);
+		sides[7] = new PolyhedronDefinition.Side(5, 0, 3);
+		PolyhedronEdge[] edges = new PolyhedronEdge[12];
+		edges[0] = new PolyhedronEdge(0, 2, 0, 4);
+		edges[1] = new PolyhedronEdge(2, 1, 1, 5);
+		edges[2] = new PolyhedronEdge(1, 3, 2, 6);
+		edges[3] = new PolyhedronEdge(3, 0, 3, 7);
+		edges[4] = new PolyhedronEdge(0, 4, 3, 0);
+		edges[5] = new PolyhedronEdge(2, 4, 0, 1);
+		edges[6] = new PolyhedronEdge(1, 4, 1, 2);
+		edges[7] = new PolyhedronEdge(3, 4, 2, 3);
+		edges[8] = new PolyhedronEdge(0, 5, 4, 7);
+		edges[9] = new PolyhedronEdge(2, 5, 5, 4);
+		edges[10] = new PolyhedronEdge(1, 5, 6, 5);
+		edges[11] = new PolyhedronEdge(3, 5, 7, 6);
+		return new PolyhedronDefinition(points, sides, edges);
+	}
+
+	public static PolyhedronDefinition CreateDodecahedronDefinition()
+	{
+		float g = (RealMath.Sqrt(5f) + 1) / 2;
+		float a = 1 / RealMath.Sqrt(3f);
+		float b = a * g;
+		float c = a / g;
+		Vector[] points = new Vector[20];
+		points[0] = new Vector(-a, -a, -a);
+		points[1] = new Vector(-a, -a, a);
+		points[2] = new Vector(-a, a, -a);
+		points[3] = new Vector(-a, a, a);
+		points[4] = new Vector(a, -a, -a);
+		points[5] = new Vector(a, -a, a);
+		points[6] = new Vector(a, a, -a);
+		points[7] = new Vector(a, a, a);
+		points[8] = new Vector(0, -c, -b);
+		points[9] = new Vector(0, -c, b);
+		points[10] = new Vector(0, c, -b);
+		points[11] = new Vector(0, c, b);
+		points[12] = new Vector(-c, -b, 0);
+		points[13] = new Vector(-c, b, 0);
+		points[14] = new Vector(c, -b, 0);
+		points[15] = new Vector(c, b, 0);
+		points[16] = new Vector(-b, 0, -c);
+		points[17] = new Vector(b, 0, -c);
+		points[18] = new Vector(-b, 0, c);
+		points[19] = new Vector(b, 0, c);
+		PolyhedronDefinition.Side[] sides = new PolyhedronDefinition.Side[12];
+		sides[0] = new PolyhedronDefinition.Side(0, 12, 1, 18, 16);
+		sides[1] = new PolyhedronDefinition.Side(0, 16, 2, 10, 8);
+		sides[2] = new PolyhedronDefinition.Side(0, 8, 4, 14, 12);
+		sides[3] = new PolyhedronDefinition.Side(1, 9, 11, 3, 18);
+		sides[4] = new PolyhedronDefinition.Side(1, 12, 14, 5, 9);
+		sides[5] = new PolyhedronDefinition.Side(2, 16, 18, 3, 13);
+		sides[6] = new PolyhedronDefinition.Side(2, 13, 15, 6, 10);
+		sides[7] = new PolyhedronDefinition.Side(3, 11, 7, 15, 13);
+		sides[8] = new PolyhedronDefinition.Side(4, 17, 19, 5, 14);
+		sides[9] = new PolyhedronDefinition.Side(4, 8, 10, 6, 17);
+		sides[10] = new PolyhedronDefinition.Side(5, 19, 7, 11, 9);
+		sides[11] = new PolyhedronDefinition.Side(6, 15, 7, 19, 17);
+		PolyhedronEdge[] edges = new PolyhedronEdge[30];
+		edges[0] = new PolyhedronEdge(16, 0, 0, 1);
+		edges[1] = new PolyhedronEdge(0, 12, 0, 2);
+		edges[2] = new PolyhedronEdge(12, 1, 0, 4);
+		edges[3] = new PolyhedronEdge(1, 18, 0, 3);
+		edges[4] = new PolyhedronEdge(18, 16, 0, 5);
+		edges[5] = new PolyhedronEdge(8, 0, 1, 2);
+		edges[6] = new PolyhedronEdge(16, 2, 1, 5);
+		edges[7] = new PolyhedronEdge(2, 10, 1, 6);
+		edges[8] = new PolyhedronEdge(10, 8, 1, 9);
+		edges[9] = new PolyhedronEdge(8, 4, 2, 9);
+		edges[10] = new PolyhedronEdge(4, 14, 2, 8);
+		edges[11] = new PolyhedronEdge(14, 12, 2, 4);
+		edges[12] = new PolyhedronEdge(1, 9, 3, 4);
+		edges[13] = new PolyhedronEdge(9, 11, 3, 10);
+		edges[14] = new PolyhedronEdge(11, 3, 3, 7);
+		edges[15] = new PolyhedronEdge(3, 18, 3, 5);
+		edges[16] = new PolyhedronEdge(14, 5, 4, 8);
+		edges[17] = new PolyhedronEdge(5, 9, 4, 10);
+		edges[18] = new PolyhedronEdge(13, 2, 5, 6);
+		edges[19] = new PolyhedronEdge(3, 13, 5, 7);
+		edges[20] = new PolyhedronEdge(13, 15, 6, 7);
+		edges[21] = new PolyhedronEdge(15, 6, 6, 11);
+		edges[22] = new PolyhedronEdge(6, 10, 6, 9);
+		edges[23] = new PolyhedronEdge(11, 7, 7, 10);
+		edges[24] = new PolyhedronEdge(7, 15, 7, 11);
+		edges[25] = new PolyhedronEdge(4, 17, 8, 9);
+		edges[26] = new PolyhedronEdge(17, 19, 8, 11);
+		edges[27] = new PolyhedronEdge(19, 5, 8, 10);
+		edges[28] = new PolyhedronEdge(6, 17, 9, 11);
+		edges[29] = new PolyhedronEdge(19, 7, 10, 11);
+		return new PolyhedronDefinition(points, sides, edges);
+	}
+
+	public static PolyhedronDefinition CreateIcosahedronDefinition()
+	{
+		float g = (RealMath.Sqrt(5f) + 1) / 2;
+		float a = 1 / RealMath.Sqrt(g * g + 1);
+		float b = a * g;
+		Vector[] points = new Vector[12];
+		points[0] = new Vector(-a, b, 0);
+		points[1] = new Vector(a, b, 0);
+		points[2] = new Vector(-a, -b, 0);
+		points[3] = new Vector(a, -b, 0);
+		points[4] = new Vector(0, -a, b);
+		points[5] = new Vector(0, a, b);
+		points[6] = new Vector(0, -a, -b);
+		points[7] = new Vector(0, a, -b);
+		points[8] = new Vector(b, 0, -a);
+		points[9] = new Vector(b, 0, a);
+		points[10] = new Vector(-b, 0, -a);
+		points[11] = new Vector(-b, 0, a);
+		PolyhedronDefinition.Side[] sides = new PolyhedronDefinition.Side[20];
+		sides[0] = new PolyhedronDefinition.Side(0, 5, 1);
+		sides[1] = new PolyhedronDefinition.Side(0, 1, 7);
+		sides[2] = new PolyhedronDefinition.Side(0, 11, 5);
+		sides[3] = new PolyhedronDefinition.Side(0, 7, 10);
+		sides[4] = new PolyhedronDefinition.Side(0, 10, 11);
+		sides[5] = new PolyhedronDefinition.Side(1, 5, 9);
+		sides[6] = new PolyhedronDefinition.Side(1, 8, 7);
+		sides[7] = new PolyhedronDefinition.Side(1, 9, 8);
+		sides[8] = new PolyhedronDefinition.Side(2, 3, 4);
+		sides[9] = new PolyhedronDefinition.Side(2, 6, 3);
+		sides[10] = new PolyhedronDefinition.Side(2, 4, 11);
+		sides[11] = new PolyhedronDefinition.Side(2, 10, 6);
+		sides[12] = new PolyhedronDefinition.Side(2, 11, 10);
+		sides[13] = new PolyhedronDefinition.Side(3, 9, 4);
+		sides[14] = new PolyhedronDefinition.Side(3, 6, 8);
+		sides[15] = new PolyhedronDefinition.Side(3, 8, 9);
+		sides[16] = new PolyhedronDefinition.Side(4, 9, 5);
+		sides[17] = new PolyhedronDefinition.Side(4, 5, 11);
+		sides[18] = new PolyhedronDefinition.Side(6, 7, 8);
+		sides[19] = new PolyhedronDefinition.Side(6, 10, 7);
+		PolyhedronEdge[] edges = new PolyhedronEdge[30];
+		edges[0] = new PolyhedronEdge(1, 0, 0, 1);
+		edges[1] = new PolyhedronEdge(0, 5, 0, 2);
+		edges[2] = new PolyhedronEdge(5, 1, 0, 5);
+		edges[3] = new PolyhedronEdge(7, 0, 1, 3);
+		edges[4] = new PolyhedronEdge(1, 7, 1, 6);
+		edges[5] = new PolyhedronEdge(0, 11, 2, 4);
+		edges[6] = new PolyhedronEdge(11, 5, 2, 17);
+		edges[7] = new PolyhedronEdge(10, 0, 3, 4);
+		edges[8] = new PolyhedronEdge(7, 10, 3, 19);
+		edges[9] = new PolyhedronEdge(10, 11, 4, 12);
+		edges[10] = new PolyhedronEdge(9, 1, 5, 7);
+		edges[11] = new PolyhedronEdge(5, 9, 5, 16);
+		edges[12] = new PolyhedronEdge(1, 8, 6, 7);
+		edges[13] = new PolyhedronEdge(8, 7, 6, 18);
+		edges[14] = new PolyhedronEdge(9, 8, 7, 15);
+		edges[15] = new PolyhedronEdge(4, 2, 8, 10);
+		edges[16] = new PolyhedronEdge(2, 3, 8, 9);
+		edges[17] = new PolyhedronEdge(3, 4, 8, 13);
+		edges[18] = new PolyhedronEdge(2, 6, 9, 11);
+		edges[19] = new PolyhedronEdge(6, 3, 9, 14);
+		edges[20] = new PolyhedronEdge(11, 2, 10, 12);
+		edges[21] = new PolyhedronEdge(4, 11, 10, 17);
+		edges[22] = new PolyhedronEdge(2, 10, 11, 12);
+		edges[23] = new PolyhedronEdge(10, 6, 11, 19);
+		edges[24] = new PolyhedronEdge(3, 9, 13, 15);
+		edges[25] = new PolyhedronEdge(9, 4, 13, 16);
+		edges[26] = new PolyhedronEdge(8, 3, 14, 15);
+		edges[27] = new PolyhedronEdge(6, 8, 14, 18);
+		edges[28] = new PolyhedronEdge(5, 4, 16, 17);
+		edges[29] = new PolyhedronEdge(6, 7, 18, 19);
+		return new PolyhedronDefinition(points, sides, edges);
+	}
+}
