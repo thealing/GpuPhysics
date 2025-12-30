@@ -9,7 +9,6 @@ using Simulator.Backend.Cpu;
 using Simulator.Engine;
 using Simulator.Backend.Common;
 using Simulator.Engine.Geometry;
-using System.Windows.Media.Imaging;
 
 public class WorldBuilder
 {
@@ -20,6 +19,9 @@ public class WorldBuilder
 	public int shapeCountPerBody;
 	public float minSize;
 	public float maxSize;
+
+	public Vector cameraPosition;
+	public Vector cameraDirection;
 
 	public WorldBuilder()
 	{
@@ -57,7 +59,8 @@ public class WorldBuilder
 			{
 				float size = Math.Max(1, maxSize / 10);
 
-				CreateChamber(new Vector(sizeLength, maxSize * 2 + objectCount * size, sizeLength));
+				var cs = new Vector(sizeLength, maxSize * 2 + objectCount * size, sizeLength);
+				CreateChamber(cs);
 
 				for (int i = 0; i < objectCount; i++)
 				{
@@ -69,6 +72,9 @@ public class WorldBuilder
 
 					AddObject(position, size2, 0.0f, 0.75f);
 				}
+
+				cameraPosition = new Vector(0, sizeLength * 1.0f + cs.Y / 20, sizeLength * 4 + cs.Y / 10);
+				cameraDirection = new Vector(0, 0, -1);
 
 				break;
 			}
@@ -127,13 +133,18 @@ public class WorldBuilder
 					}
 				}
 
-				CreateChamber(new Vector(baseCount * maxSize * 2, maxY * 2, baseCount * maxSize * 2));
+				var cs = new Vector(baseCount * maxSize * 2, maxY * 2, baseCount * maxSize * 2);
+				CreateChamber(cs);
+
+				cameraPosition = new Vector(cs.X * 0.5f, cs.Y * 0.5f, cs.Z * 0.9f);
+				cameraDirection = new Vector(0, cs.Y * 0.2f, 0) - cameraPosition;
 
 				break;
 			}
 			case Example.Stack:
 			{
-				CreateChamber(new Vector(sizeLength, maxSize * objectCount, sizeLength));
+				var cs = new Vector(sizeLength, maxSize * objectCount, sizeLength);
+				CreateChamber(cs);
 
 				for (int i = 0; i < objectCount; i++)
 				{
@@ -142,6 +153,9 @@ public class WorldBuilder
 
 					AddObject(position, size, 0.0f, 0.75f);
 				}
+
+				cameraPosition = new Vector(0, sizeLength * 1.0f + cs.Y / 200, sizeLength * 4 + cs.Y / 100);
+				cameraDirection = new Vector(0, 0, -1);
 
 				break;
 			}
@@ -193,6 +207,9 @@ public class WorldBuilder
 					theta += arcStep;
 					radius += spiralStep * arcStep * 2f;
 				}
+
+				cameraPosition = new Vector(0, radius * 1.4f, radius * 1.4f);
+				cameraDirection = -cameraPosition;
 
 				break;
 			}
@@ -265,12 +282,15 @@ public class WorldBuilder
 					storage.AddPolyhedronShape(shape, pd);
 				}
 
+				cameraPosition = new Vector(0, tableRadius * 0.2f, tableRadius * 0.2f);
+				cameraDirection = new Vector(tableRadius * 0.4f, -tableRadius * 0.2f, -tableRadius * 0.4f);
+
 				break;
 			}
 			case Example.Thumbler:
 			{
 				// Thumbler size
-				sizeLength = MathF.Cbrt(objectCount) * maxSize * 4;
+				sizeLength = (MathF.Cbrt(objectCount) + 2) * maxSize * 4;
 
 				CreateChamber(new Vector(sizeLength, sizeLength, sizeLength));
 
@@ -326,15 +346,21 @@ public class WorldBuilder
 
 					AddObject(RandomPosition(center - half * 0.8f, center + half * 0.8f), Random(minSize, maxSize), 0, 0);
 				}
+
+				cameraPosition = new Vector(0, center.Y, sizeLength);
+				cameraDirection = new Vector(0, 0, -1);
+
 				break;
 			}
 			case Example.Downhill_Slope:
 			{
+				int spawnObjectCount = 100;
+
 				float wallHeight = maxSize * 30;
 				float wallThickness = maxSize;
 				float bottomThickness = maxSize;
 
-				float bowlSize = Math.Max(wallHeight, (maxSize + 3) * objectCount / 3 * 4);
+				float bowlSize = Math.Max(wallHeight, (maxSize + 3) * spawnObjectCount / 3 * 4);
 
 				float tiltAngle = 1.15f; // ~20 degrees, good sliding angle
 
@@ -362,12 +388,12 @@ public class WorldBuilder
 				AddQube(new Vector(0, wallY, -bowlSize - 0), new Vector(xm, wallHeight, wallThickness), FromAxisAngle(new Vector(1, 0, 0), -0), 0);
 
 				// ---- Objects around the bowl (same Y level) ----
-				int remaining = objectCount - 5;
+				int remaining = spawnObjectCount - 5;
 				float spawnY = wallY * 2f + maxSize * (1 + MathF.Cos(tiltAngle)) + wallThickness  * MathF.Sin(tiltAngle);
 				float ringRadius = bowlSize * 0.55f;
 
 				// ---- Spawn objects on wall tops ----
-				int perWall = objectCount;
+				int perWall = spawnObjectCount;
 				float span = bowlSize * 0.45f;
 
 				for (int i = 0; i < perWall; i++)
@@ -381,6 +407,9 @@ public class WorldBuilder
 					AddStableQube(new Vector(r, spawnY, t), new Vector(maxSize), FromAxisAngle(new Vector(0, 0, 1), -tiltAngle), 1, 0.00f + friction);
 				}
 
+				cameraPosition = new Vector(-bowlSize * 1.5f, bowlSize * 1, bowlSize * 0.4f);
+				cameraDirection = new Vector(bowlSize * 2, -bowlSize * 1, -bowlSize * 0.6f);
+
 				break;
 			}
 			case Example.Mass_Ratio:
@@ -388,7 +417,7 @@ public class WorldBuilder
 				// Use the square root of objectCount to build a roughly square grid of columns
 				int c2 = (int)MathF.Sqrt(objectCount);
 
-				CreateChamber(new Vector(maxSize * c2 * 2, maxSize * c2 * 2, maxSize * c2 * 2));
+				CreateChamber(new Vector(maxSize * c2 * 2, maxSize * c2 * 2, maxSize * c2 * 3));
 
 				// Temporarily override the shape type to isolate mass effects
 				var shapeType1 = shapeType;
@@ -427,6 +456,9 @@ public class WorldBuilder
 				// Restore the previous shape type
 				shapeType = shapeType1;
 
+				cameraPosition = new Vector(0, maxSize * c2, maxSize * c2 * 3);
+				cameraDirection = new Vector(0, 0, -1);
+
 				break;
 			}
 			case Example.Restitution_1:
@@ -435,7 +467,7 @@ public class WorldBuilder
 				int c2 = (int)MathF.Sqrt(objectCount);
 
 				// Create a chamber large enough to contain the full grid and bounce height
-				CreateChamber(new Vector(maxSize * c2 * 2, maxSize * 20, maxSize * c2 * 2));
+				CreateChamber(new Vector(maxSize * c2 * 2, maxSize * 20, maxSize * c2 * 5));
 
 				// Temporarily switch to spheres to remove rotational effects
 				var shapeType1 = shapeType;
@@ -468,8 +500,8 @@ public class WorldBuilder
 						placed++;
 
 						// Position objects in a centered square grid on the XZ plane
-						float x = maxSize * 3 * (xIndex - c2 / 2);
-						float z = maxSize * 3 * (zIndex - c2 / 2);
+						float z = -maxSize * 3 * (xIndex - c2 / 2);
+						float x = maxSize * 3 * (zIndex - c2 / 2);
 
 						// Start each sphere high enough to observe bounce height clearly
 						float y = maxSize * 10;
@@ -482,6 +514,9 @@ public class WorldBuilder
 
 				// Restore original shape type
 				shapeType = shapeType1;
+
+				cameraPosition = new Vector(0, maxSize * c2, maxSize * c2 * 4);
+				cameraDirection = new Vector(0, 0, -1);
 
 				break;
 			}
@@ -528,7 +563,7 @@ public class WorldBuilder
 						float y = maxSize * 3 * (yIndex + 1);
 
 						// Place spheres offset along Z so they can fall and bounce
-						float z = maxSize * 10;
+						float z = maxSize * 0;
 
 						// Add one sphere per grid cell
 						// Mass is constant, only restitution changes
@@ -539,6 +574,9 @@ public class WorldBuilder
 				// Restore original shape type
 				shapeType = shapeType1;
 
+				cameraPosition = new Vector(0, maxSize * c2 * 1.7f, maxSize * c2 * 5);
+				cameraDirection = new Vector(0, 0, -1);
+
 				break;
 			}
 			case Example.Restitution_3:
@@ -547,9 +585,9 @@ public class WorldBuilder
 
 				for (int v = -1; v <= 1; v++)
 				{
-					var offset = new Vector(v * sizeLength * 3, 0, 0);
+					var offset = new Vector(v * sizeLength * 5, 0, 0);
 
-					CreateChamber(offset, new Vector(sizeLength, maxSize * 2 + objectCount * size / 3, sizeLength), true, maxSize);
+					CreateChamber(offset, new Vector(sizeLength, maxSize * 2 + objectCount * size / 4.5f, sizeLength), true, maxSize);
 
 					for (int i = 0; i < objectCount / 3; i++)
 					{
@@ -563,6 +601,9 @@ public class WorldBuilder
 					}
 				}
 
+				cameraPosition = new Vector(0, maxSize * 2 + objectCount * size / 4.3f, sizeLength * 11 + objectCount * size / 2);
+				cameraDirection = new Vector(0, 0, -1);
+
 				break;
 			}
 			default:
@@ -575,11 +616,6 @@ public class WorldBuilder
 	private float Random(float min, float max)
 	{
 		return (float)R.NextDouble() * (max - min) + min;
-	}
-
-	private Vector RandomSize(float min, float max)
-	{
-		return new Vector(Random(min, max), Random(min, max), Random(min, max));
 	}
 
 	private Vector RandomPosition(Vector min, Vector max)
@@ -645,6 +681,8 @@ public class WorldBuilder
 
 	private void AddStableQube(Vector position, Vector scale, Quaternion rotation, float density, float friction)
 	{
+		// 8 cubes as the octants, so 4 contact points will be generated when they collide with the gorund
+
 		BodyDefinition body = new();
 
 		body.Transform.Position = position;
@@ -657,7 +695,7 @@ public class WorldBuilder
 		shape.BodyIndex = bodyIndex;
 		shape.Density = density;
 
-		friction /= 2;
+		friction /= 2; // results in expected behaviour
 		scale /= 2;
 
 		shape.Material.Restitution = 0;

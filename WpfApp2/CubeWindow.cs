@@ -222,6 +222,8 @@ class CubeWindow
 
 		bool disableGraphics = false;
 
+		bool demoCamera = true;
+
 		int executorType = 0;
 
 		bool copyBack = true;
@@ -372,6 +374,35 @@ class CubeWindow
 				{
 					if (float.TryParse(box2.Text.Trim(), out float i2))
 						viewport.CameraController.MoveSensitivity = i2;
+				};
+				row2.Children.Add(label2);
+				row2.Children.Add(box2);
+				root.Children.Add(row2);
+			}
+
+			//disable rendering
+			{
+				var row2 = new StackPanel
+				{
+					Orientation = Orientation.Horizontal,
+					Margin = new Thickness(0, 1, 0, 1)
+				};
+				var label2 = new TextBlock
+				{
+					Text = "Demo Camera Positions: ",
+					ToolTip = "Move the camera such that the world is clearly visible in the examples",
+					VerticalAlignment = VerticalAlignment.Center
+				};
+				var box2 = new CheckBox
+				{
+					Margin = new Thickness(5, 0, 0, 0),
+					IsChecked = demoCamera
+				};
+				box2.Unchecked += (s1, e1) => {
+					demoCamera = false;
+				};
+				box2.Checked += (s1, e1) => {
+					demoCamera = true;
 				};
 				row2.Children.Add(label2);
 				row2.Children.Add(box2);
@@ -1288,6 +1319,18 @@ class CubeWindow
 
 				CreateBodies();
 				CreateGraphics();
+
+				if (demoCamera)
+				{
+					camera.Position = worldBuilder.cameraPosition.ToPoint3D();
+					camera.LookDirection = worldBuilder.cameraDirection.ToVector3D();
+					camera.UpDirection = new Vector3D(0, 1, 0);
+
+					dir = camera.LookDirection;
+					dir.Normalize();
+					yaw = Math.Atan2(dir.X, dir.Z) * 180.0 / Math.PI;
+					pitch = Math.Asin(dir.Y) * 180.0 / Math.PI;
+				}
 			}
 
 			if (Keyboard.IsKeyDown(Key.H))
