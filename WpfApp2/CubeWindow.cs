@@ -43,7 +43,7 @@ class CubeWindow
 		Application application = new Application();
 
 		Window window = new Window();
-		window.Title = "GPU Physics Demo WPF";
+		window.Title = "GPU Physics Demo";
 		window.Width = 800;
 		window.Height = 600;
 		window.Background = Brushes.LightBlue;

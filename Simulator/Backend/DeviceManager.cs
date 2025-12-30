@@ -2,6 +2,8 @@
 
 using ILGPU;
 using ILGPU.Runtime;
+using ILGPU.Runtime.CPU;
+using ILGPU.Runtime.OpenCL;
 
 public class DeviceManager
 {
