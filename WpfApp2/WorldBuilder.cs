@@ -41,7 +41,7 @@ public class WorldBuilder
 		storage.Config.UseWarmStarting = 0;
 
 		storage.Config.CorrectionVelocityFactor = 0.3f;
-		storage.Config.CorrectionVelocityLimit = 15f;
+		storage.Config.CorrectionVelocityLimit = 9999;
 	}
 
 	private Random R;
@@ -354,7 +354,7 @@ public class WorldBuilder
 			}
 			case Example.Downhill_Slope:
 			{
-				int spawnObjectCount = 100;
+				int spawnObjectCount = Math.Min(objectCount, 100);
 
 				float wallHeight = maxSize * 30;
 				float wallThickness = maxSize;
