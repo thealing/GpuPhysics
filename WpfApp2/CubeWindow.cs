@@ -155,7 +155,7 @@ class CubeWindow
 		//CpuWorldStorage storage = new();
 		//DynamicGrid<CpuDGStore> broadPhase = new(new CpuDGStore());
 
-		Backend.Cpu.Executor executor = new();
+		Backend.Cpu.Executor parallelExecutor = new();
 		Backend.Cpu.SequentialExecutor sequentialExecutor = new();
 		Backend.Cpu.WorldStorage storage = new();
 
@@ -673,7 +673,7 @@ class CubeWindow
 					Margin = new Thickness(5, 0, 0, 0),
 					Items =
 					{
-						"Sequential", "Parallel", "GPU"
+						"Sequential", "Parallel on CPU", "Parallel on GPU"
 					},
 					SelectedIndex = executorType
 				};
@@ -684,8 +684,34 @@ class CubeWindow
 				row2.Children.Add(box2);
 				root.Children.Add(row2);
 			}
-
+			//thread count
+			{
+				var row2 = new StackPanel
+				{
+					Orientation = Orientation.Horizontal,
+					Margin = new Thickness(0, 0, 0, 5)
+				};
+				var label2 = new TextBlock
+				{
+					Text = "CPU thread count: ",
+					VerticalAlignment = VerticalAlignment.Center
+				};
+				var box2 = new TextBox
+				{
+					Width = 80,
+					Margin = new Thickness(5, 0, 0, 0),
+					Text = parallelExecutor.ParallelOptions.MaxDegreeOfParallelism.ToString()
+				};
+				box2.TextChanged += (s1, e1) => {
+					int.TryParse(box2.Text, out int i2);
+					parallelExecutor.ParallelOptions.MaxDegreeOfParallelism = i2;
+				};
+				row2.Children.Add(label2);
+				row2.Children.Add(box2);
+				root.Children.Add(row2);
+			}
 			//copy back
+			if (false)
 			{
 				var row2 = new StackPanel
 				{
@@ -1196,6 +1222,9 @@ class CubeWindow
 
 			for (int shapeIndex = 0; shapeIndex < storage.ShapeCount; shapeIndex++)
 			{
+				if (disableGraphics)
+					break;
+
 				int coloringIndex = shapeIndex;
 
 				if (colorByShape == false)
@@ -1372,7 +1401,7 @@ class CubeWindow
 					world.Storage = storage;
 					world.CollisionMap = new(storage.DynamicGridStorage);
 
-					var t = world.Step(executor);
+					var t = world.Step(parallelExecutor);
 
 					times.Add(t);
 				}
@@ -1493,7 +1522,7 @@ class CubeWindow
 			if (disableGraphics)
 				return;
 
-			for (int shapeIndex = 0; shapeIndex < storage.ShapeCount; shapeIndex++)
+			for (int shapeIndex = 0; shapeIndex < worldModels.Count; shapeIndex++)
 			{
 				var sphereId = storage.Shapes[shapeIndex].SphereIndex;
 				if (sphereId != -1)

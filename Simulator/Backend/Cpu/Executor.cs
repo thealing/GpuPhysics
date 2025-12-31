@@ -1,5 +1,6 @@
 ﻿namespace Simulator.Backend.Cpu;
 
+using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Simulator.Core;
@@ -12,7 +13,7 @@ public class Executor : IExecutor
 	{
 		ParallelOptions = new ParallelOptions
 		{
-			MaxDegreeOfParallelism = 7
+			MaxDegreeOfParallelism = Environment.ProcessorCount / 2
 		};
 	}
 
