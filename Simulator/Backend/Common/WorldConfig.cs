@@ -7,9 +7,9 @@ public struct WorldConfig
 	public float DeltaTime;
 	public int IterationCount;
 	public Twist Gravity;
-	public byte UseWarmStarting;
 	public float CorrectionVelocityFactor;
 	public float CorrectionVelocityLimit;
+	public byte UseWarmStarting;
 
 	public WorldConfig()
 	{
