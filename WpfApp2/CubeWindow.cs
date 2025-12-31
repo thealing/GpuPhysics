@@ -20,7 +20,6 @@ using System.Diagnostics;
 using System.Windows.Input;
 using System.Collections.Generic;
 using Simulator.Engine.Collisions.BroadPhase;
-using Simulator.Core;
 using System.Linq;
 using Simulator.Backend.Common;
 using ILGPU.Runtime;
@@ -703,8 +702,8 @@ class CubeWindow
 					Text = parallelExecutor.ParallelOptions.MaxDegreeOfParallelism.ToString()
 				};
 				box2.TextChanged += (s1, e1) => {
-					int.TryParse(box2.Text, out int i2);
-					parallelExecutor.ParallelOptions.MaxDegreeOfParallelism = i2;
+					if (int.TryParse(box2.Text, out int i2))
+						parallelExecutor.ParallelOptions.MaxDegreeOfParallelism = i2;
 				};
 				row2.Children.Add(label2);
 				row2.Children.Add(box2);
