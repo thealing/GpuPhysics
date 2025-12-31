@@ -1,7 +1,7 @@
 ﻿namespace Simulator.Engine.Physics.Simulation;
 
-using Simulator.Core;
 using Simulator.Engine.Collisions.BroadPhase;
+using Simulator.Engine.Core;
 
 public partial struct World<TStorage, TCollisionMap>
 	where TStorage : struct, IWorldStorage

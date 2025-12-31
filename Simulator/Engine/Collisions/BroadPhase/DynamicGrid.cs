@@ -1,7 +1,7 @@
 ﻿namespace Simulator.Engine.Collisions.BroadPhase;
 
 using System;
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public partial struct DynamicGrid<TStorage> : ICollisionMap
 	where TStorage : IDynamicGridStorage

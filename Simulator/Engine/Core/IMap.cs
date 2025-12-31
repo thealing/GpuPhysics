@@ -1,4 +1,4 @@
-﻿namespace Simulator.Core;
+﻿namespace Simulator.Engine.Core;
 
 public interface IMap<TKey, TValue>
 {

@@ -3,7 +3,7 @@
 using ILGPU;
 using ILGPU.Runtime;
 using Simulator.Backend.Common;
-using Simulator.Core;
+using Simulator.Engine.Core;
 using Simulator.Engine.Physics.Simulation;
 
 public struct ContactStorage

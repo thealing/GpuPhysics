@@ -1,6 +1,6 @@
 ﻿namespace Simulator.Backend.Common;
 
-using Simulator.Core;
+using Simulator.Engine.Core;
 using Simulator.Engine.Physics;
 
 public struct SplitContact

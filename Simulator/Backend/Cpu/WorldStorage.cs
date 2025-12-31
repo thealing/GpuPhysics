@@ -2,10 +2,10 @@
 
 using System.Collections.Generic;
 using Simulator.Backend.Common;
-using Simulator.Core;
 using Simulator.Engine;
 using Simulator.Engine.Collisions;
 using Simulator.Engine.Collisions.NarrowPhase;
+using Simulator.Engine.Core;
 using Simulator.Engine.Geometry;
 using Simulator.Engine.Physics;
 using Simulator.Engine.Physics.Simulation;

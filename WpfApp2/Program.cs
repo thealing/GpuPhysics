@@ -18,7 +18,6 @@ using ILGPU.Runtime.Cuda;
 using ILGPU.Runtime.OpenCL;
 using Simulator.Backend;
 using Simulator.Backend.Common;
-using Simulator.Core;
 using Simulator;
 using Simulator.Engine;
 using Simulator.Engine.Collisions;
@@ -31,6 +30,7 @@ using Simulator.Engine.Physics.Simulation;
 using Color = System.Windows.Media.Color;
 using Colors = System.Windows.Media.Colors;
 using ILGPU.Backends;
+using Simulator.Engine.Core;
 
 public static class Program
 {

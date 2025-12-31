@@ -8,7 +8,7 @@ using ILGPU;
 using ILGPU.Backends;
 using ILGPU.Backends.OpenCL;
 using ILGPU.Runtime;
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public class Executor : IExecutor
 {

@@ -1,6 +1,6 @@
 ﻿namespace Simulator.Engine.Collisions.BroadPhase;
 
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public interface ICollisionMap
 {

@@ -1,6 +1,6 @@
 ﻿namespace Simulator.Backend.Cpu;
 
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public readonly partial struct BodyStorage
 {

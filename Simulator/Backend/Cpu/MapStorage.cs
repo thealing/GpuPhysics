@@ -1,7 +1,7 @@
 ﻿namespace Simulator.Backend.Cpu;
 
 using System;
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public struct MapStorage<TKey, TValue> : IMapStorage<TKey, TValue>
 	where TKey : unmanaged, IEquatable<TKey>

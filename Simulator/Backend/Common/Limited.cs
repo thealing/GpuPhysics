@@ -1,6 +1,6 @@
 ﻿namespace Simulator.Backend.Common;
 
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public static class Limited
 {

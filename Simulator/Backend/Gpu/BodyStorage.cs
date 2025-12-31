@@ -2,7 +2,7 @@
 
 using ILGPU;
 using ILGPU.Runtime;
-using Simulator.Core;
+using Simulator.Engine.Core;
 using Simulator.Engine.Geometry;
 using Simulator.Engine.Physics;
 

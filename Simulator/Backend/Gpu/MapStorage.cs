@@ -3,7 +3,7 @@
 using System;
 using ILGPU;
 using ILGPU.Runtime;
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public struct MapStorage<TKey, TValue> : IMapStorage<TKey, TValue>
 	where TKey : unmanaged, IEquatable<TKey>

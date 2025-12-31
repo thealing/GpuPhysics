@@ -1,5 +1,6 @@
 ﻿namespace Simulator.Backend.Gpu;
-using Simulator.Core;
+
+using Simulator.Engine.Core;
 
 public partial struct BodyStorage
 {

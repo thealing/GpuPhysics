@@ -2,9 +2,9 @@
 
 using ILGPU;
 using ILGPU.Runtime;
-using Simulator.Core;
 using Simulator.Engine.Collisions;
 using Simulator.Engine.Collisions.BroadPhase;
+using Simulator.Engine.Core;
 
 public struct DynamicGridStorage : IDynamicGridStorage
 {

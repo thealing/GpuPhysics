@@ -1,7 +1,7 @@
 ﻿namespace Simulator.Backend.Cpu;
 
 using System.Threading;
-using Simulator.Core;
+using Simulator.Engine.Core;
 
 public readonly struct Atomic : IAtomic
 {
