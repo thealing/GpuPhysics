@@ -2,7 +2,7 @@
 
 A multi-threaded physics simulator with a generic backend for multi-core CPUs and GPUs.
 
-The GPU executor is based on [ILGPU](https://www.google.com/search?q=https://github.com/m4reko/ILGPU).
+The GPU executor is based on [ILGPU](https://github.com/m4rs-mt/ILGPU).
 
 **Note: This project is a work in progress.**
 
